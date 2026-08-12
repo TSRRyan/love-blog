@@ -1741,6 +1741,11 @@ a, button, input, textarea, select, .gallery-item, .timeline-card, .diary-card, 
 <footer class="footer">
   <p class="footer-quote">「世间万物，唯有你和爱不可辜负。」</p>
   <p class="footer-names">阿睿 <span>&amp;</span> 璐璐</p>
+  <div style="margin-top:1.5rem;display:flex;gap:0.8rem;justify-content:center">
+    <button class="btn btn-ghost btn-sm" onclick="exportData()">📤 导出数据</button>
+    <button class="btn btn-ghost btn-sm" onclick="document.getElementById('importFile').click()">📥 导入数据</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this.files[0])">
+  </div>
 </footer>
 
 <!-- ============================================
@@ -2424,6 +2429,49 @@ function setupReveal() {
 }
 function refreshReveal() {
   document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+}
+
+// ── Data Export / Import ───────────────────────
+function exportData() {
+  Promise.all([
+    DB.get('timeline'),
+    DB.get('posts'),
+    DB.get('gallery')
+  ]).then(function(results) {
+    var blob = new Blob([JSON.stringify({
+      timeline: results[0] || [],
+      posts: results[1] || [],
+      gallery: results[2] || [],
+      exported: new Date().toISOString()
+    }, null, 2)], {type: 'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'love-blog-backup.json';
+    a.click();
+    alert('数据导出成功！文件已下载。');
+  });
+}
+
+function importData(file) {
+  if (!file) return;
+  if (!confirm('导入数据会覆盖当前的编辑内容，确定继续？')) return;
+  var reader = new FileReader();
+  reader.onload = function() {
+    try {
+      var data = JSON.parse(reader.result);
+      Promise.all([
+        DB.set('timeline', data.timeline || []),
+        DB.set('posts', data.posts || []),
+        DB.set('gallery', data.gallery || [])
+      ]).then(function() {
+        alert('导入成功！页面将刷新。');
+        location.reload();
+      });
+    } catch(e) {
+      alert('文件格式错误，导入失败。');
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ── Util ──────────────────────────────────────

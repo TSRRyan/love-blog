@@ -1849,6 +1849,15 @@ function loadData() {
     DB.set('posts', posts);
     DB.set('gallery', gallery);
 
+    // Auto-import seed.json on first visit (online deployment)
+    if (!results[0] && !results[1] && !results[2]) {
+      fetch('seed.json').then(function(r) { return r.json(); }).then(function(seed) {
+        if (seed.timeline) { timeline = seed.timeline; DB.set('timeline', timeline); }
+        if (seed.posts)    { posts = seed.posts; DB.set('posts', posts); }
+        if (seed.gallery)  { gallery = seed.gallery; DB.set('gallery', gallery); }
+        renderTimeline(); renderPosts(); renderGallery(); setupReveal();
+      }).catch(function() {});
+    }
   });
 }
 

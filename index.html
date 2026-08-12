@@ -1849,12 +1849,22 @@ function loadData() {
     DB.set('posts', posts);
     DB.set('gallery', gallery);
 
-    // Auto-import seed.json on first visit (online deployment)
-    if (!results[0] && !results[1] && !results[2]) {
+    // Auto-import seed.json if data looks like defaults (≤4 stories, no posts)
+    var needsSeed = (!timeline || timeline.length <= 4) && (!posts || posts.length === 0);
+    // Also check if IDB was previously empty (first real visit)
+    if (!results[0]) needsSeed = true;
+
+    if (needsSeed) {
       fetch('seed.json').then(function(r) { return r.json(); }).then(function(seed) {
-        if (seed.timeline) { timeline = seed.timeline; DB.set('timeline', timeline); }
-        if (seed.posts)    { posts = seed.posts; DB.set('posts', posts); }
-        if (seed.gallery)  { gallery = seed.gallery; DB.set('gallery', gallery); }
+        if (seed.timeline && seed.timeline.length > 4) {
+          timeline = seed.timeline; DB.set('timeline', timeline);
+        }
+        if (seed.posts && seed.posts.length > 0) {
+          posts = seed.posts; DB.set('posts', posts);
+        }
+        if (seed.gallery && seed.gallery.length > 4) {
+          gallery = seed.gallery; DB.set('gallery', gallery);
+        }
         renderTimeline(); renderPosts(); renderGallery(); setupReveal();
       }).catch(function() {});
     }

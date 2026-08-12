@@ -1,0 +1,2537 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿睿 & 璐璐</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   VARIABLES — Lavender Romance
+   ============================================ */
+:root {
+  --lavender-50:  #f9f6fc;
+  --lavender-100: #f1eaf8;
+  --lavender-200: #e4d6f2;
+  --lavender-300: #cdb5e6;
+  --lavender-400: #b690d6;
+  --lavender-500: #9b6fc0;
+  --lavender-600: #8253ab;
+  --lavender-700: #6a3f91;
+  --lavender-800: #4e2d6e;
+  --lavender-900: #34204a;
+
+  --accent:       #b690d6;
+  --accent-soft:  #dcc8ee;
+  --accent-deep:  #8253ab;
+  --bg:           #faf8fc;
+  --bg-card:      #ffffff;
+  --text:         #2d2435;
+  --text-secondary: #6b5e76;
+  --text-muted:   #9d90a8;
+  --border:       rgba(182, 144, 214, 0.18);
+  --border-hover: rgba(182, 144, 214, 0.40);
+
+  --shadow-card:  0 1px 2px rgba(52, 32, 74, 0.04), 0 4px 16px rgba(52, 32, 74, 0.06);
+  --shadow-card-hover: 0 1px 2px rgba(52, 32, 74, 0.05), 0 8px 32px rgba(52, 32, 74, 0.10);
+  --shadow-btn:   0 2px 8px rgba(130, 83, 171, 0.25);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 999px;
+
+  --font-serif:   'Cormorant Garamond', 'Noto Serif SC', 'STSong', 'Songti SC', serif;
+  --font-sans:    'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration:     0.45s;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 350;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--lavender-200);
+  color: var(--lavender-800);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--lavender-300); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--lavender-400); }
+
+/* ============================================
+   AMBIENT BACKGROUND
+   ============================================ */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.45;
+}
+
+.ambient-orb:nth-child(1) {
+  width: 600px; height: 600px;
+  background: var(--lavender-200);
+  top: -15%; left: -10%;
+  animation: orbDrift 18s ease-in-out infinite alternate;
+}
+
+.ambient-orb:nth-child(2) {
+  width: 450px; height: 450px;
+  background: #e8d5f5;
+  bottom: -12%; right: -8%;
+  animation: orbDrift 22s ease-in-out infinite alternate-reverse;
+}
+
+.ambient-orb:nth-child(3) {
+  width: 300px; height: 300px;
+  background: #f0e0f8;
+  top: 55%; left: 55%;
+  animation: orbDrift 20s ease-in-out infinite alternate;
+}
+
+@keyframes orbDrift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(60px, -40px) scale(1.15); }
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  transition: background var(--duration) var(--ease-out);
+}
+
+.nav.scrolled {
+  background: rgba(250, 248, 252, 0.78);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 68px;
+}
+
+.nav-brand {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--lavender-800);
+  letter-spacing: 0.3px;
+}
+
+.nav-brand b { font-style: normal; font-weight: 600; }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.4px;
+  position: relative;
+  padding: 6px 0;
+  transition: color var(--duration) var(--ease-out);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0; height: 1.5px;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: width var(--duration) var(--ease-out);
+}
+
+.nav-links a:hover { color: var(--lavender-700); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: var(--lavender-700);
+  border-radius: 1px;
+  transition: var(--duration) var(--ease-out);
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5rem 2rem;
+  overflow: hidden;
+}
+
+/* Hero split portrait backgrounds */
+.hero-portraits {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-portrait {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.88;
+}
+
+.hero-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-portrait.left {
+  left: 0;
+}
+
+/* 阿睿 (男生) — 竖图，人在下方石头处 */
+.hero-portrait.left img {
+  object-position: 50% 85%;
+}
+
+.hero-portrait.right {
+  right: 0;
+}
+
+/* 璐璐 (女生) — 横图，更高的Y值裁掉天空，让水面与阿睿齐平 */
+.hero-portrait.right img {
+  object-position: 55% 78%;
+}
+
+/* Unified lavender tint over both portraits */
+.hero-portraits::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(180, 140, 210, 0.18);
+  z-index: 1;
+}
+
+.hero-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(250,248,252,0.08) 0%,
+    transparent 4%,
+    transparent 96%,
+    rgba(250,248,252,0.04) 100%
+  );
+}
+
+/* Soft blend seam between the two portraits */
+.hero-seam {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 60%, transparent 30%, rgba(250,248,252,0.45) 75%),
+    linear-gradient(90deg,
+      rgba(250,248,252,0.5) 0%,
+      transparent 25%,
+      transparent 75%,
+      rgba(250,248,252,0.5) 100%
+    );
+}
+
+/* Hero content sits above portraits */
+.hero > *:not(.hero-portraits):not(.hero-seam) {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-line {
+  width: 1px; height: 64px;
+  background: linear-gradient(180deg, transparent, #6a4f82, transparent);
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeIn 0.8s 0.2s var(--ease-out) forwards;
+}
+
+.hero-names {
+  font-family: var(--font-serif);
+  font-size: clamp(3.2rem, 7vw, 5.2rem);
+  font-weight: 600;
+  color: #2d1f3a;
+  letter-spacing: 1px;
+  line-height: 1.15;
+  text-shadow: 0 0 40px rgba(250,248,252,0.6), 0 0 8px rgba(250,248,252,0.3);
+  opacity: 0;
+  animation: fadeSlideUp 0.9s 0.35s var(--ease-out) forwards;
+}
+
+.hero-names em {
+  font-style: italic;
+  font-weight: 400;
+  color: #5c3680;
+}
+
+.hero-tagline {
+  margin-top: 1.4rem;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: #4a3658;
+  letter-spacing: 3px;
+  text-shadow: 0 0 30px rgba(250,248,252,0.5);
+  opacity: 0;
+  animation: fadeSlideUp 0.9s 0.55s var(--ease-out) forwards;
+}
+
+/* Days Counter */
+.counter {
+  margin-top: 3.5rem;
+  text-align: center;
+  opacity: 0;
+  animation: fadeSlideUp 0.9s 0.75s var(--ease-out) forwards;
+}
+
+.counter-ring {
+  width: 130px; height: 130px;
+  margin: 0 auto;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.counter-ring svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.counter-ring .track {
+  fill: none;
+  stroke: var(--lavender-100);
+  stroke-width: 3;
+}
+
+.counter-ring .progress {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s var(--ease-spring);
+}
+
+.counter-number {
+  font-family: var(--font-serif);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #2d1f3a;
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(250,248,252,0.5);
+}
+
+.counter-label {
+  font-size: 0.72rem;
+  color: #5a4468;
+  letter-spacing: 3px;
+  margin-top: 0.3rem;
+  font-weight: 500;
+  text-shadow: 0 0 20px rgba(250,248,252,0.4);
+}
+
+.counter-since {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: #4a3658;
+  text-shadow: 0 0 20px rgba(250,248,252,0.4);
+}
+
+.counter-since span {
+  color: #3c2258;
+  font-weight: 600;
+}
+
+/* ============================================
+   MUSIC PLAYER
+   ============================================ */
+.music-widget {
+  position: fixed;
+  top: 80px;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: 0.4rem 1rem 0.4rem 0.4rem;
+  box-shadow: var(--shadow-card);
+  transition: all var(--duration) var(--ease-out);
+  cursor: pointer;
+  user-select: none;
+}
+
+.music-widget:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--accent);
+}
+
+.music-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--lavender-500), var(--lavender-600));
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, box-shadow var(--duration) var(--ease-out);
+  box-shadow: 0 2px 8px rgba(130, 83, 171, 0.25);
+}
+
+.music-widget:hover .music-btn {
+  transform: scale(1.05);
+}
+
+.music-widget.playing .music-btn {
+  animation: musicPulse 2s ease-in-out infinite;
+  box-shadow: 0 2px 16px rgba(130, 83, 171, 0.4);
+}
+
+@keyframes musicPulse {
+  0%, 100% { box-shadow: 0 2px 8px rgba(130, 83, 171, 0.25); }
+  50%      { box-shadow: 0 2px 20px rgba(130, 83, 171, 0.5); }
+}
+
+.music-btn svg {
+  width: 16px; height: 16px;
+  stroke: #fff;
+  fill: none;
+}
+
+.music-btn .pause-icon { display: none; }
+.music-widget.playing .music-btn .play-icon { display: none; }
+.music-widget.playing .music-btn .pause-icon { display: block; }
+
+.music-info {
+  font-size: 0.78rem;
+  color: var(--lavender-700);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+  letter-spacing: 0.3px;
+  font-weight: 450;
+}
+
+.music-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.music-wave span {
+  width: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: height 0.25s ease;
+}
+
+.music-widget.playing .music-wave span {
+  animation: waveAnim 0.8s ease-in-out infinite alternate;
+}
+
+.music-widget.playing .music-wave span:nth-child(1) { animation-delay: 0s; }
+.music-widget.playing .music-wave span:nth-child(2) { animation-delay: 0.15s; }
+.music-widget.playing .music-wave span:nth-child(3) { animation-delay: 0.3s; }
+.music-widget.playing .music-wave span:nth-child(4) { animation-delay: 0.45s; }
+
+@keyframes waveAnim {
+  0%   { height: 4px; }
+  100% { height: 14px; }
+}
+
+/* Hidden audio element */
+#bgmAudio { display: none; }
+
+/* ============================================
+   CAT CURSOR
+   ============================================ */
+body { cursor: none; }
+a, button, input, textarea, select, .gallery-item, .timeline-card, .diary-card, .clickable { cursor: none; }
+
+.cat-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: 36px; height: 36px;
+  transform: translate(-14px, -8px);
+  transition: transform 0.05s ease-out;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.cat-cursor.pouncing { transform: translate(-14px, -8px) scale(1.15); }
+.cat-cursor.sleepy .cat-eye { ry: 0.5; }
+
+/* Cat trailing effect */
+.cat-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  font-size: 0.5rem;
+  opacity: 0.3;
+  animation: trailFade 1s ease-out forwards;
+}
+
+@keyframes trailFade {
+  0%   { opacity: 0.4; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3) translateY(-20px); }
+}
+
+@media (max-width: 768px) {
+  .cat-cursor { width: 28px; height: 28px; }
+  .cat-cursor svg { width: 28px; height: 28px; }
+}
+
+/* ============================================
+   ROMANTIC PARTICLES
+   ============================================ */
+.romantic-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  animation: particleFloat var(--p-dur) var(--p-delay) infinite ease-in-out;
+}
+
+@keyframes particleFloat {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(1); opacity: 0; }
+  10%  { opacity: var(--p-opacity); }
+  90%  { opacity: var(--p-opacity); }
+  100% { transform: translateY(var(--p-y)) translateX(var(--p-x)) rotate(var(--p-rot)) scale(0.6); opacity: 0; }
+}
+
+  .music-widget {
+    top: 76px;
+    right: 0.8rem;
+    padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+  }
+  .music-info { max-width: 80px; font-size: 0.7rem; }
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.2rem;
+  opacity: 0;
+  animation: fadeIn 0.6s 1.4s var(--ease-out) forwards,
+             floatHint 2.2s 2s ease-in-out infinite;
+}
+
+.scroll-hint span {
+  display: block;
+  width: 1px; height: 28px;
+  background: var(--lavender-300);
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+@keyframes floatHint {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
+/* ============================================
+   SECTIONS — Common
+   ============================================ */
+.section {
+  position: relative;
+  z-index: 1;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 7rem 2.5rem;
+}
+
+.section-head {
+  text-align: center;
+  margin-bottom: 4.5rem;
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--lavender-900);
+  letter-spacing: 1px;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1.3rem;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  width: 32px; height: 1px;
+  background: var(--lavender-300);
+}
+
+.divider-dot {
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ============================================
+   TIMELINE
+   ============================================ */
+.timeline {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--lavender-300) 10%, var(--lavender-300) 90%, transparent);
+  transform: translateX(-50%);
+}
+
+.timeline-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+}
+
+.timeline-row:nth-child(odd) { flex-direction: row; }
+.timeline-row:nth-child(even) { flex-direction: row-reverse; }
+
+.timeline-card {
+  width: calc(50% - 1.5rem);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.8rem;
+  transition: box-shadow var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease-out);
+}
+
+.timeline-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.timeline-card .t-date {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-card .t-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--lavender-900);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-card .t-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+.timeline-card .t-img {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  margin-top: 1rem;
+  object-fit: cover;
+  max-height: 200px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.timeline-card .t-img:hover {
+  opacity: 0.85;
+}
+
+.t-photo-wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.t-photo-count {
+  position: absolute;
+  bottom: 8px; right: 8px;
+  background: rgba(52,32,74,0.65);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+}
+
+/* Story photo editor list */
+.story-photo-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--lavender-50);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+}
+
+.story-photo-item img {
+  width: 44px; height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.story-photo-item input {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  background: #fff;
+  outline: none;
+}
+
+.story-photo-item input:focus {
+  border-color: var(--accent);
+}
+
+.story-photo-cover-btn {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent-deep);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.story-photo-cover-btn.is-cover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.story-photo-del {
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #c4787e;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+
+.story-photo-del:hover { background: rgba(196,120,126,0.1); }
+
+.story-photo-reorder {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.reorder-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.55rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+
+.reorder-btn:hover:not(:disabled) {
+  color: var(--accent-deep);
+  background: var(--lavender-100);
+}
+
+.reorder-btn:disabled { opacity: 0.25; cursor: default; }
+
+.timeline-card .t-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.timeline-dot {
+  width: 12px; height: 12px;
+  background: var(--accent-soft);
+  border-radius: 50%;
+  border: 2.5px solid var(--lavender-200);
+  flex-shrink: 0;
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================
+   DIARY GRID
+   ============================================ */
+.diary-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 450;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 0.65rem 1.5rem;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.btn-primary {
+  background: var(--lavender-600);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+
+.btn-primary:hover {
+  background: var(--lavender-700);
+  box-shadow: 0 4px 16px rgba(130, 83, 171, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--lavender-700);
+  background: rgba(182, 144, 214, 0.06);
+}
+
+.btn-sm { padding: 0.35rem 0.85rem; font-size: 0.76rem; }
+
+.btn-danger {
+  background: transparent;
+  color: #b8686b;
+  border: 1px solid rgba(184, 104, 107, 0.2);
+}
+
+.btn-danger:hover {
+  background: rgba(184, 104, 107, 0.05);
+  border-color: #b8686b;
+}
+
+.diary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 1.2rem;
+}
+
+.diary-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow var(--duration) var(--ease-out),
+              transform var(--duration) var(--ease-out);
+}
+
+.diary-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-3px);
+}
+
+.diary-card .d-date {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
+}
+
+.diary-card .d-title {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--lavender-900);
+  margin-bottom: 0.7rem;
+  line-height: 1.4;
+}
+
+.diary-card .d-img {
+  width: 100%;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  object-fit: cover;
+  max-height: 200px;
+}
+
+.diary-card .d-body {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  flex: 1;
+  white-space: pre-wrap;
+}
+
+.diary-card .d-mood {
+  display: inline-block;
+  font-size: 0.74rem;
+  color: var(--accent-deep);
+  background: var(--lavender-50);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  margin-top: 1rem;
+  align-self: flex-start;
+}
+
+.diary-card .d-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* Empty state */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.empty-state .es-icon {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state .es-text {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+  line-height: 1.8;
+}
+
+/* ============================================
+   GALLERY
+   ============================================ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.gallery-item {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4 / 5;
+  background: var(--lavender-100);
+}
+
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.gallery-item:hover img { transform: scale(1.06); }
+
+.gallery-item .g-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    rgba(52, 32, 74, 0.45) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--duration) var(--ease-out);
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+}
+
+.gallery-item:hover .g-overlay { opacity: 1; }
+
+.gallery-item .g-overlay span {
+  color: #fff;
+  font-size: 0.82rem;
+  letter-spacing: 0.8px;
+  font-weight: 450;
+}
+
+.gallery-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  border: 1.5px dashed var(--lavender-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-muted);
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.gallery-placeholder:hover {
+  border-color: var(--accent);
+  background: rgba(182, 144, 214, 0.05);
+  color: var(--accent-deep);
+}
+
+.gallery-placeholder .gp-icon { font-size: 1.8rem; }
+
+.gallery-del-btn {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 0.75rem;
+  cursor: pointer;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.gallery-item:hover .gallery-del-btn { opacity: 1; }
+.gallery-del-btn:hover { background: rgba(200,60,60,0.75); }
+
+/* ============================================
+   LIGHTBOX
+   ============================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(30, 18, 40, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.lightbox.active { opacity: 1; pointer-events: auto; }
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.3);
+  transform: scale(0.94);
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.lightbox.active img { transform: scale(1); }
+
+.lightbox-close {
+  position: absolute;
+  top: 1.4rem; right: 1.4rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 1.3rem;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--duration) var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--duration) var(--ease-out);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1;
+}
+
+.lightbox-nav:hover { background: rgba(255,255,255,0.22); }
+.lightbox-nav.hidden { opacity: 0; pointer-events: none; }
+.lb-prev { left: 1.2rem; }
+.lb-next { right: 1.2rem; }
+
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(30, 18, 40, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration) var(--ease-out);
+}
+
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 16px 64px rgba(52, 32, 74, 0.18);
+  transform: translateY(16px);
+  transition: transform 0.4s var(--ease-spring);
+}
+
+.modal-overlay.active .modal { transform: translateY(0); }
+
+.modal-title {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--lavender-900);
+  margin-bottom: 1.8rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.form-group { margin-bottom: 1.1rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.4px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 350;
+  color: var(--text);
+  background: var(--lavender-50);
+  transition: border-color var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out);
+  outline: none;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(182, 144, 214, 0.1);
+}
+
+.form-group textarea { min-height: 130px; }
+
+.form-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 4.5rem 2rem;
+}
+
+.footer-quote {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.footer-names {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+}
+
+.footer-names span { color: var(--accent); }
+
+/* ============================================
+   REVEAL
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s var(--ease-out),
+              transform 0.75s var(--ease-out);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .nav-inner { padding: 0 1.5rem; }
+
+  .nav-links {
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    background: rgba(250, 248, 252, 0.94);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: all var(--duration) var(--ease-out);
+  }
+
+  .nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-toggle { display: flex; }
+
+  .hero { padding: 4rem 1.5rem; }
+  .hero-names { font-size: 2.6rem; }
+
+  .section { padding: 5rem 1.5rem; }
+
+  .timeline::before { left: 22px; transform: none; }
+  .timeline-row,
+  .timeline-row:nth-child(even) {
+    flex-direction: row;
+    gap: 1.2rem;
+  }
+  .timeline-card { width: calc(100% - 48px); }
+  .timeline-dot { margin-top: 1.3rem; }
+
+  .diary-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }}
+
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+  .modal { padding: 1.8rem; }
+  .section-head { margin-bottom: 3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     SIAMESE CAT CURSOR
+     ============================================ -->
+<div id="catCursor" class="cat-cursor">
+  <svg width="36" height="36" viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+    <!-- Tail with wag animation -->
+    <g transform-origin="20 30">
+      <path d="M18 32 Q6 36 2 22" stroke="#5c3a28" stroke-width="3.5" fill="none" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" values="-8 20 30;10 20 30;-8 20 30" dur="1.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1"/>
+      </path>
+    </g>
+    <!-- Body with gentle breathing -->
+    <g>
+      <ellipse cx="28" cy="32" rx="12" ry="10" fill="#faf0e0">
+        <animate attributeName="ry" values="10;9.5;10" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+    <!-- Darker back -->
+    <ellipse cx="30" cy="28" rx="8" ry="6" fill="#f5e6d0"/>
+    <!-- Head with bobbing -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="-1 40 20;1 40 20;-1 40 20" dur="2s" repeatCount="indefinite"/>
+    <!-- Head shape -->
+    <ellipse cx="38" cy="18" rx="10" ry="9" fill="#faf0e0"/>
+    <!-- Dark face mask (Siamese) -->
+    <ellipse cx="42" cy="20" rx="6" ry="6" fill="#5c3a28" opacity="0.7"/>
+    <!-- Left ear with twitch -->
+    <polygon points="32,12 30,2 38,10" fill="#faf0e0">
+      <animateTransform attributeName="transform" type="rotate" values="0 32 12;3 32 12;0 32 12" dur="5s" begin="1s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="33,11 31,4 37,10" fill="#5c3a28" opacity="0.5">
+      <animateTransform attributeName="transform" type="rotate" values="0 33 11;3 33 11;0 33 11" dur="5s" begin="1s" repeatCount="indefinite"/>
+    </polygon>
+    <!-- Right ear with twitch -->
+    <polygon points="40,10 42,1 46,10" fill="#faf0e0">
+      <animateTransform attributeName="transform" type="rotate" values="0 43 6;-2 43 8;0 43 6" dur="4s" begin="3s" repeatCount="indefinite"/>
+    </polygon>
+    <polygon points="41,10 43,3 46,10" fill="#5c3a28" opacity="0.5"/>
+    <!-- Eyes -->
+    <g>
+      <!-- Left eye -->
+      <ellipse cx="37" cy="17" rx="2.5" ry="3" fill="#4a90d9">
+        <animate attributeName="ry" values="3;0.3;3" dur="4s" begin="2s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Right eye -->
+      <ellipse cx="44" cy="17" rx="2.5" ry="3" fill="#4a90d9">
+        <animate attributeName="ry" values="3;0.3;3" dur="4s" begin="2s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Pupils (look around) -->
+      <ellipse cx="37" cy="17" rx="1.2" ry="2.2" fill="#1a1a2e">
+        <animate attributeName="cx" values="37;36.5;37.5;37" dur="6s" begin="0.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="44" cy="17" rx="1.2" ry="2.2" fill="#1a1a2e">
+        <animate attributeName="cx" values="44;43.5;44.5;44" dur="6s" begin="0.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Eye shine -->
+      <circle cx="36" cy="16" r="0.8" fill="#fff"/>
+      <circle cx="43" cy="16" r="0.8" fill="#fff"/>
+    </g>
+    <!-- Nose -->
+    <polygon points="40.5,20 39.5,21 41.5,21" fill="#e8a0a0"/>
+    <!-- Mouth -->
+    <path d="M39 22 Q40.5 23.5 42 22" stroke="#c4787e" stroke-width="0.6" fill="none"/>
+    <!-- Whiskers -->
+    <line x1="33" y1="20" x2="27" y2="18" stroke="#ddd" stroke-width="0.4"/>
+    <line x1="33" y1="21" x2="27" y2="22" stroke="#ddd" stroke-width="0.4"/>
+    <line x1="48" y1="20" x2="54" y2="18" stroke="#ddd" stroke-width="0.4"/>
+    <line x1="48" y1="21" x2="54" y2="22" stroke="#ddd" stroke-width="0.4"/>
+    </g>
+    <!-- Front paws with kneading -->
+    <g>
+      <ellipse cx="34" cy="38" rx="4" ry="3" fill="#faf0e0"/>
+      <ellipse cx="34" cy="40" rx="3.5" ry="2.5" fill="#faf0e0">
+        <animate attributeName="cy" values="40;39.5;40" dur="2s" begin="0s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="38" cy="40" rx="3.5" ry="2.5" fill="#faf0e0">
+        <animate attributeName="cy" values="40;40.5;40" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Paw toes (Siamese dark points) -->
+      <ellipse cx="34" cy="40" rx="3.5" ry="2" fill="#5c3a28" opacity="0.4"/>
+      <ellipse cx="38" cy="40" rx="3.5" ry="2" fill="#5c3a28" opacity="0.4"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ============================================
+     AMBIENT ORBS
+     ============================================ -->
+<div class="ambient">
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+  <div class="ambient-orb"></div>
+</div>
+
+<!-- ============================================
+     ROMANTIC FLOATING PARTICLES
+     ============================================ -->
+<div class="romantic-particles" id="particles"></div>
+
+<!-- ============================================
+     ANIME CHARACTERS
+     ============================================ -->
+<!-- ============================================
+     NAVIGATION
+     ============================================ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand"><b>阿睿</b> &amp; 璐璐</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#story">故事</a></li>
+      <li><a href="#blog">日记</a></li>
+      <li><a href="#gallery">瞬间</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================
+     MUSIC PLAYER WIDGET
+     ============================================ -->
+<div class="music-widget" id="musicWidget" title="余佳运 - 和你">
+  <button class="music-btn" id="musicBtn">
+    <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="6 3 20 12 6 21 6 3"/>
+    </svg>
+    <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <rect x="5" y="3" width="5" height="18" rx="1"/>
+      <rect x="14" y="3" width="5" height="18" rx="1"/>
+    </svg>
+  </button>
+  <div class="music-wave">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <span class="music-info">和你</span>
+</div>
+<audio id="bgmAudio" preload="auto"></audio>
+
+<!-- ============================================
+     HERO
+     ============================================ -->
+<section class="hero">
+  <div class="hero-portraits">
+    <div class="hero-portrait left"><img src="photos/阿睿河边.jpeg" alt="阿睿"></div>
+    <div class="hero-portrait right"><img src="photos/璐璐河边.jpeg" alt="璐璐"></div>
+  </div>
+  <div class="hero-seam"></div>
+
+  <div class="hero-line"></div>
+
+  <h1 class="hero-names">
+    阿睿<em>&amp;</em>璐璐
+  </h1>
+  <p class="hero-tagline">从相遇那一刻起，时间就有了意义</p>
+
+  <div class="counter">
+    <div class="counter-ring">
+      <svg viewBox="0 0 130 130">
+        <defs>
+          <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#a080c6"/>
+            <stop offset="100%" stop-color="#5c3680"/>
+          </linearGradient>
+        </defs>
+        <circle class="track" cx="65" cy="65" r="59"/>
+        <circle class="progress" id="ringProgress" cx="65" cy="65" r="59"
+                stroke-dasharray="370.7" stroke-dashoffset="370.7"/>
+      </svg>
+      <div>
+        <div class="counter-number" id="daysCount">0</div>
+        <div class="counter-label">天</div>
+      </div>
+    </div>
+    <p class="counter-since">从 <span id="startDate">--</span> 到今天</p>
+  </div>
+
+  <div class="scroll-hint"><span></span></div>
+</section>
+
+<!-- ============================================
+     STORY TIMELINE
+     ============================================ -->
+<section class="section" id="story">
+  <div class="section-head reveal">
+    <p class="section-eyebrow">Our Story</p>
+    <h2 class="section-title">我们的故事</h2>
+    <div class="divider">
+      <span class="divider-dot"></span>
+    </div>
+  </div>
+
+  <div class="diary-toolbar reveal" style="justify-content:flex-end;max-width:760px;margin:0 auto 2rem;position:sticky;top:76px;z-index:20;padding:8px 0;">
+    <button class="btn btn-primary" id="newStoryBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      添加故事
+    </button>
+  </div>
+
+  <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- ============================================
+     LOVE DIARY
+     ============================================ -->
+<section class="section" id="blog">
+  <div class="section-head reveal">
+    <p class="section-eyebrow">Love Diary</p>
+    <h2 class="section-title">恋爱日记</h2>
+    <div class="divider">
+      <span class="divider-dot"></span>
+    </div>
+  </div>
+
+  <div class="diary-toolbar reveal">
+    <button class="btn btn-primary" id="newPostBtn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      写日记
+    </button>
+  </div>
+
+  <div class="diary-grid" id="postsGrid"></div>
+</section>
+
+<!-- ============================================
+     GALLERY
+     ============================================ -->
+<section class="section" id="gallery">
+  <div class="section-head reveal">
+    <p class="section-eyebrow">Gallery</p>
+    <h2 class="section-title">美好瞬间</h2>
+    <div class="divider">
+      <span class="divider-dot"></span>
+    </div>
+  </div>
+
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- ============================================
+     MODAL — New/Edit Post
+     ============================================ -->
+<div class="modal-overlay" id="postModal">
+  <div class="modal">
+    <h3 class="modal-title" id="modalTitle">写日记</h3>
+    <form id="postForm">
+      <div class="form-group">
+        <label>标题</label>
+        <input type="text" id="postTitle" placeholder="今天叫它什么？" required>
+      </div>
+      <div class="form-group">
+        <label>内容</label>
+        <textarea id="postBody" placeholder="写下想对璐璐说的话…" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>图片链接（可选）</label>
+        <input type="url" id="postImage" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>心情</label>
+        <select id="postMood">
+          <option value="幸福">幸福</option>
+          <option value="开心">开心</option>
+          <option value="感动">感动</option>
+          <option value="想念">想念</option>
+          <option value="日常">日常</option>
+          <option value="期待">期待</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="cancelPost">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============================================
+     LIGHTBOX
+     ============================================ -->
+<input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none">
+<input type="file" id="timelineFileInput" accept="image/*" style="display:none">
+
+<!-- ============================================
+     MODAL — Story Editor
+     ============================================ -->
+<div class="modal-overlay" id="storyModal">
+  <div class="modal" style="max-width:600px">
+    <h3 class="modal-title" id="storyModalTitle">编辑故事</h3>
+    <form id="storyForm">
+      <div class="form-group">
+        <label>日期</label>
+        <input type="date" id="storyDate" required>
+      </div>
+      <div class="form-group">
+        <label>标题</label>
+        <input type="text" id="storyTitle" placeholder="例如：第一次约会" required>
+      </div>
+      <div class="form-group">
+        <label>内容</label>
+        <textarea id="storyDesc" placeholder="写下这个值得纪念的瞬间…" required style="min-height:80px"></textarea>
+      </div>
+      <div class="form-group">
+        <label>照片（可多张，每张可写描述）</label>
+        <button type="button" class="btn btn-ghost btn-sm" id="storyPhotoBtn" style="margin-bottom:0.6rem">+ 添加照片</button>
+        <div id="storyPhotoList" style="display:flex;flex-direction:column;gap:0.5rem;max-height:180px;overflow-y:auto;padding-right:4px"></div>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" id="cancelStory">取消</button>
+        <button type="button" class="btn btn-primary" onclick="submitStoryForm()">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M18 6L6 18M6 6l12 12"/>
+    </svg>
+  </button>
+  <button class="lightbox-nav lb-prev" id="lbPrev">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="lightbox-nav lb-next" id="lbNext">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <img id="lightboxImg" src="" alt="">
+  <p id="lightboxCaption" style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);color:#fff;font-size:0.85rem;letter-spacing:0.5px;text-shadow:0 1px 4px rgba(0,0,0,0.5)"></p>
+  <p id="lightboxIndex" style="position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:0.72rem;letter-spacing:1px"></p>
+</div>
+
+<!-- ============================================
+     FOOTER
+     ============================================ -->
+<footer class="footer">
+  <p class="footer-quote">「世间万物，唯有你和爱不可辜负。」</p>
+  <p class="footer-names">阿睿 <span>&amp;</span> 璐璐</p>
+</footer>
+
+<!-- ============================================
+     SCRIPTS
+     ============================================ -->
+<script>
+// ── Config ────────────────────────────────────
+const LOVE_START = '2025-08-13';
+
+const defaultTimeline = [
+  { date: '2025-08-13', title: '在一起了', desc: '这一天，我们牵起了彼此的手。世界从此多了一个你，也多了一份温柔。', photos: [], coverIndex: 0 },
+  { date: '2025-09-13', title: '第一个月', desc: '三十天不长，但每一天都在心里刻下了你的名字。越来越确定，就是你了。', photos: [], coverIndex: 0 },
+  { date: '2025-12-25', title: '第一个圣诞节', desc: '和你一起看城市的灯火，比任何时候都温暖。最好的礼物，就是你在我身边。', photos: [], coverIndex: 0 },
+  { date: '2026-02-14', title: '第一个情人节', desc: '送了花，写了卡片，但所有的话都抵不过三个字：我爱你。', photos: [], coverIndex: 0 },
+];
+
+const defaultGallery = [
+  { url: 'photos/30f46954462b82ac172bef8747b388be.jpg', caption: '我们' },
+  { url: 'photos/582b52229c991ffd5594d7750125524a.jpg', caption: '我们' },
+  { url: 'photos/62705a7d598fe6cd043c82a96420d377.jpg', caption: '我们' },
+  { url: 'photos/a04c7bb5d7de81106493bb4157c15b48.jpg', caption: '我们' },
+];
+
+// ── IndexedDB wrapper ──────────────────────────
+const DB = (function() {
+  var _db = null;
+  function open() {
+    return new Promise(function(resolve, reject) {
+      var req = indexedDB.open('loveBlog', 1);
+      req.onupgradeneeded = function(e) {
+        var db = e.target.result;
+        if (!db.objectStoreNames.contains('store')) db.createObjectStore('store');
+      };
+      req.onsuccess = function(e) { _db = e.target.result; resolve(_db); };
+      req.onerror = function() { reject(req.error); };
+    });
+  }
+  function get(key) {
+    return open().then(function(db) {
+      return new Promise(function(resolve) {
+        var tx = db.transaction('store', 'readonly');
+        var req = tx.objectStore('store').get(key);
+        req.onsuccess = function() { resolve(req.result); };
+        req.onerror = function() { resolve(null); };
+      });
+    });
+  }
+  function set(key, val) {
+    return open().then(function(db) {
+      return new Promise(function(resolve, reject) {
+        var tx = db.transaction('store', 'readwrite');
+        tx.objectStore('store').put(val, key);
+        tx.oncomplete = function() { resolve(); };
+        tx.onerror = function() { reject(tx.error); };
+      });
+    });
+  }
+  function remove(key) {
+    return open().then(function(db) {
+      return new Promise(function(resolve) {
+        var tx = db.transaction('store', 'readwrite');
+        tx.objectStore('store').delete(key);
+        tx.oncomplete = function() { resolve(); };
+      });
+    });
+  }
+  return { get: get, set: set, remove: remove };
+})();
+
+// ── State ─────────────────────────────────────
+let posts   = [];
+let timeline = defaultTimeline;
+let gallery = defaultGallery;
+let editingIdx = null;
+
+// Load persisted data, migrating from localStorage if needed
+function loadData() {
+  return Promise.all([
+    DB.get('timeline'),
+    DB.get('posts'),
+    DB.get('gallery')
+  ]).then(function(results) {
+    timeline = results[0] || null;
+    posts    = results[1] || null;
+    gallery  = results[2] || null;
+
+    if (!timeline) {
+      var old = localStorage.getItem('lv_timeline');
+      if (old) { timeline = JSON.parse(old); } else { timeline = defaultTimeline; }
+    }
+    if (!posts) {
+      var oldP = localStorage.getItem('lv_posts');
+      posts = oldP ? JSON.parse(oldP) : [];
+    }
+    if (!gallery) {
+      var oldG = localStorage.getItem('lv_gallery');
+      gallery = oldG ? JSON.parse(oldG) : defaultGallery;
+    }
+
+    DB.set('timeline', timeline);
+    DB.set('posts', posts);
+    DB.set('gallery', gallery);
+
+  });
+}
+
+function upgradeAllImages() {
+  var jobs = [];
+
+  function processDataUrl(oldUrl, cb) {
+    var img = new Image();
+    img.onload = function() {
+      var maxW = 1200;
+      var w = img.naturalWidth, h = img.naturalHeight;
+      // If already smaller than maxW, just re-save at better quality
+      var cw = Math.min(w, maxW), ch = Math.round(h * (cw / w));
+      var canvas = document.createElement('canvas');
+      canvas.width = cw; canvas.height = ch;
+      canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+      cb(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = function() { cb(oldUrl); };
+    img.src = oldUrl;
+  }
+
+  function upgradeTimeline(cb) {
+    var items = timeline.filter(function(it) { return it && (it.photos || it.image); });
+    if (!items.length) { cb(); return; }
+    var done = 0, total = 0;
+    items.forEach(function(item) {
+      if (item.photos) {
+        item.photos.forEach(function(p) {
+          if (p.url && p.url.indexOf('base64,') > -1) { total++; }
+        });
+      }
+      if (item.image && item.image.indexOf('base64,') > -1) { total++; }
+    });
+    if (total === 0) { cb(); return; }
+    items.forEach(function(item) {
+      var pdone = 0, ptotal = 0;
+      if (item.photos) {
+        item.photos.forEach(function(p) {
+          if (p.url && p.url.indexOf('base64,') > -1) { ptotal++; }
+        });
+        if (ptotal === 0) { done++; if (done === items.length) cb(); return; }
+        item.photos.forEach(function(p, pi) {
+          if (!p.url || p.url.indexOf('base64,') === -1) return;
+          processDataUrl(p.url, function(newUrl) { item.photos[pi].url = newUrl; pdone++; if (pdone === ptotal) { done++; if (done === items.length) cb(); } });
+        });
+      }
+      if (item.image && item.image.indexOf('base64,') > -1) {
+        total++;
+        processDataUrl(item.image, function(newUrl) { item.image = newUrl; done++; if (done === items.length) cb(); });
+      }
+    });
+  }
+
+  function upgradeGallery(cb) {
+    var items = gallery.filter(function(g) { return g && g.url && g.url.indexOf('base64,') > -1; });
+    if (!items.length) { cb(); return; }
+    var done = 0;
+    items.forEach(function(g, gi) {
+      processDataUrl(g.url, function(newUrl) { gallery[gi].url = newUrl; done++; if (done === items.length) cb(); });
+    });
+  }
+
+  function upgradePosts(cb) {
+    var items = posts.filter(function(p) { return p && p.image && p.image.indexOf('base64,') > -1; });
+    if (!items.length) { cb(); return; }
+    var done = 0;
+    items.forEach(function(p, pi) {
+      processDataUrl(p.image, function(newUrl) { posts[pi].image = newUrl; done++; if (done === items.length) cb(); });
+    });
+  }
+
+  upgradeTimeline(function() {
+    upgradePosts(function() {
+      upgradeGallery(function() {
+        DB.set('timeline', timeline);
+        DB.set('posts', posts);
+        DB.set('gallery', gallery);
+        alert('全部照片已升级到高清画质！页面将刷新。');
+        location.reload();
+      });
+    });
+  });
+}
+
+function saveTimeline() {
+  DB.set('timeline', timeline).catch(function() { alert('保存故事失败'); });
+}
+
+function savePosts() {
+  DB.set('posts', posts).catch(function() { alert('保存日记失败'); });
+}
+
+function saveGallery() {
+  DB.set('gallery', gallery).catch(function() {});
+}
+
+// ── Init ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  loadData().then(function() {
+  updateCounter();
+  renderTimeline();
+  renderPosts();
+  renderGallery();
+  setupNav();
+  setupModal();
+  setupStoryModal();
+  setupLightbox();
+  setupGalleryInput();
+  setupMusicPlayer();
+  setupReveal();
+  setInterval(updateCounter, 60_000);
+  });
+});
+
+
+// ── Music Player ──────────────────────────────
+function setupMusicPlayer() {
+  const audio  = document.getElementById('bgmAudio');
+  const widget = document.getElementById('musicWidget');
+  const btn    = document.getElementById('musicBtn');
+
+  audio.src   = 'music.mp3';
+  audio.loop  = true;
+  audio.volume = 0.6;
+
+  const play  = () => { audio.play().then(() => widget.classList.add('playing')).catch(() => {}); };
+  const pause = () => { audio.pause(); widget.classList.remove('playing'); };
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    audio.paused ? play() : pause();
+  });
+
+  widget.addEventListener('click', e => {
+    if (e.target === btn || e.target.closest('.music-btn')) return;
+    audio.paused ? play() : pause();
+  });
+
+  // Auto-play on first user interaction
+  document.addEventListener('click', () => {
+    if (audio.paused) play();
+  }, { once: true });
+}
+
+// ── Counter ───────────────────────────────────
+function updateCounter() {
+  const start = new Date(LOVE_START + 'T00:00:00');
+  const now   = new Date();
+  const days  = Math.floor((now - start) / 864e5);
+  document.getElementById('daysCount').textContent = days;
+  document.getElementById('startDate').textContent = LOVE_START;
+
+  // Ring progress — one full year = 365 days
+  const pct = Math.min(days / 365, 1);
+  const circ = 370.7; // 2π × 59
+  document.getElementById('ringProgress').style.strokeDashoffset = circ * (1 - pct);
+}
+
+// ── Timeline ──────────────────────────────────
+function renderTimeline() {
+  document.getElementById('timeline').innerHTML = timeline.map((item, i) => {
+    const photos = item.photos || (item.image ? [{url: item.image, caption: ''}] : []);
+    const cover  = photos.length ? photos[item.coverIndex || 0] || photos[0] : null;
+    return `
+    <div class="timeline-row reveal">
+      <div class="timeline-card">
+        <div class="t-date">${esc(item.date)}</div>
+        <div class="t-title">${esc(item.title)}</div>
+        <div class="t-desc">${esc(item.desc)}</div>
+        ${cover ? `
+          <div class="t-photo-wrap" onclick="event.stopPropagation();viewStoryPhotos(${i})">
+            <img class="t-img" src="${esc(cover.url)}" alt="${esc(cover.caption || '')}" loading="lazy" onerror="this.parentElement.remove()">
+            ${photos.length > 1 ? `<span class="t-photo-count">${photos.length} 张</span>` : ''}
+          </div>
+        ` : ''}
+        <div class="t-actions">
+          <button class="btn btn-ghost btn-sm" onclick="editStory(${i})">编辑</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteStory(${i})">删除</button>
+        </div>
+      </div>
+      <div class="timeline-dot"></div>
+      <div style="width:calc(50% - 1.5rem)"></div>
+    </div>
+  `}).join('');
+}
+
+
+function editStory(i) { openStoryModal(i); }
+function deleteStory(i) {
+  if (!confirm('删除这个故事？')) return;
+  timeline.splice(i, 1);
+  saveTimeline(); renderTimeline(); refreshReveal();
+}
+
+// ── Story Modal (multi-photo) ──────────────────
+let editingStoryIdx = null;
+let storyPhotos = []; // [{url, caption}]
+let storyCoverIdx = 0;
+
+function setupStoryModal() {
+  const overlay = document.getElementById('storyModal');
+  const form    = document.getElementById('storyForm');
+
+  document.getElementById('newStoryBtn').addEventListener('click', () => openStoryModal());
+  document.getElementById('cancelStory').addEventListener('click', closeStoryModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeStoryModal(); });
+
+  document.getElementById('storyPhotoBtn').addEventListener('click', () => {
+    document.getElementById('timelineFileInput').click();
+  });
+
+  document.getElementById('timelineFileInput').addEventListener('change', function() {
+    const files = Array.from(this.files).filter(f => f.type.startsWith('image/'));
+    if (!files.length) { this.value = ''; return; }
+    let loaded = 0;
+    files.forEach(file => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        // Resize to max 800px wide, keep aspect ratio, compress JPEG quality 0.7
+        const maxW = 1200;
+        const w = img.naturalWidth, h = img.naturalHeight;
+        const scale = Math.min(1, maxW / w);
+        const cw = Math.round(w * scale), ch = Math.round(h * scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, cw, ch);
+        const thumb = canvas.toDataURL('image/jpeg', 0.85);
+        storyPhotos.push({ url: thumb, caption: '' });
+        loaded++;
+        if (loaded === files.length) { renderStoryPhotoList(); }
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); loaded++; };
+      img.src = url;
+    });
+    this.value = '';
+  });
+
+}
+
+function submitStoryForm() {
+  const dateVal  = document.getElementById('storyDate').value;
+  const titleVal = document.getElementById('storyTitle').value.trim();
+  const descVal  = document.getElementById('storyDesc').value.trim();
+  if (!dateVal) { alert('请选择日期'); return; }
+  if (!titleVal) { alert('请填写标题'); return; }
+  if (!descVal) { alert('请填写内容'); return; }
+
+  const item = {
+    date: dateVal,
+    title: titleVal,
+    desc: descVal,
+    photos: storyPhotos,
+    coverIndex: storyCoverIdx,
+  };
+
+  if (editingStoryIdx !== null) {
+    timeline[editingStoryIdx] = item;
+    editingStoryIdx = null;
+  } else {
+    timeline.push(item);
+    timeline.sort((a, b) => new Date(a.date) - new Date(b.date));
+  }
+  saveTimeline();
+  renderTimeline(); refreshReveal();
+  closeStoryModal();
+  alert('保存成功！');
+}
+
+function renderStoryPhotoList() {
+  const list = document.getElementById('storyPhotoList');
+  list.innerHTML = storyPhotos.map((p, i) => `
+    <div class="story-photo-item">
+      <div class="story-photo-reorder">
+        <button type="button" class="reorder-btn" onclick="moveStoryPhoto(${i},'up')" ${i === 0 ? 'disabled' : ''} title="上移">▲</button>
+        <button type="button" class="reorder-btn" onclick="moveStoryPhoto(${i},'down')" ${i === storyPhotos.length - 1 ? 'disabled' : ''} title="下移">▼</button>
+      </div>
+      <img src="${esc(p.url)}" alt="">
+      <input type="text" placeholder="照片描述…" value="${esc(p.caption)}" oninput="storyPhotos[${i}].caption=this.value">
+      <button type="button" class="story-photo-cover-btn${i === storyCoverIdx ? ' is-cover' : ''}" onclick="setStoryCover(${i})">${i === storyCoverIdx ? '★ 封面' : '封面'}</button>
+      <button type="button" class="story-photo-del" onclick="removeStoryPhoto(${i})" title="删除">✕</button>
+    </div>
+  `).join('');
+}
+
+function moveStoryPhoto(i, dir) {
+  if (dir === 'up' && i > 0) {
+    var tmp = storyPhotos[i]; storyPhotos[i] = storyPhotos[i - 1]; storyPhotos[i - 1] = tmp;
+    if (storyCoverIdx === i) storyCoverIdx = i - 1; else if (storyCoverIdx === i - 1) storyCoverIdx = i;
+  } else if (dir === 'down' && i < storyPhotos.length - 1) {
+    var tmp = storyPhotos[i]; storyPhotos[i] = storyPhotos[i + 1]; storyPhotos[i + 1] = tmp;
+    if (storyCoverIdx === i) storyCoverIdx = i + 1; else if (storyCoverIdx === i + 1) storyCoverIdx = i;
+  }
+  renderStoryPhotoList();
+}
+
+function setStoryCover(i) {
+  storyCoverIdx = i;
+  renderStoryPhotoList();
+}
+
+function removeStoryPhoto(i) {
+  storyPhotos.splice(i, 1);
+  if (storyCoverIdx >= storyPhotos.length) storyCoverIdx = Math.max(0, storyPhotos.length - 1);
+  renderStoryPhotoList();
+}
+
+function openStoryModal(idx = null) {
+  const overlay = document.getElementById('storyModal');
+  if (idx !== null) {
+    editingStoryIdx = idx;
+    const item = timeline[idx];
+    document.getElementById('storyModalTitle').textContent = '编辑故事';
+    document.getElementById('storyDate').value  = item.date;
+    document.getElementById('storyTitle').value = item.title;
+    document.getElementById('storyDesc').value  = item.desc;
+    storyPhotos = item.photos ? [...item.photos] : (item.image ? [{url: item.image, caption: ''}] : []);
+    storyCoverIdx = item.coverIndex || 0;
+  } else {
+    editingStoryIdx = null;
+    document.getElementById('storyModalTitle').textContent = '添加故事';
+    document.getElementById('storyForm').reset();
+    storyPhotos = [];
+    storyCoverIdx = 0;
+  }
+  renderStoryPhotoList();
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeStoryModal() {
+  document.getElementById('storyModal').classList.remove('active');
+  document.body.style.overflow = '';
+  editingStoryIdx = null;
+  storyPhotos = [];
+  storyCoverIdx = 0;
+}
+
+// ── Story photo gallery viewer ─────────────────
+let galleryPhotos = [];
+let galleryIdx = 0;
+
+function viewStoryPhotos(i) {
+  const item = timeline[i];
+  galleryPhotos = item.photos || (item.image ? [{url: item.image, caption: ''}] : []);
+  galleryIdx = 0;
+  if (galleryPhotos.length) showGalleryImage();
+}
+
+function showGalleryImage() {
+  const p = galleryPhotos[galleryIdx];
+  document.getElementById('lightboxImg').src = p.url;
+  document.getElementById('lightboxCaption').textContent = p.caption || '';
+  document.getElementById('lightboxIndex').textContent = galleryPhotos.length > 1 ? `${galleryIdx + 1} / ${galleryPhotos.length}` : '';
+  document.getElementById('lbPrev').classList.toggle('hidden', galleryPhotos.length <= 1);
+  document.getElementById('lbNext').classList.toggle('hidden', galleryPhotos.length <= 1);
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+
+// ── Posts ─────────────────────────────────────
+function renderPosts() {
+  const grid = document.getElementById('postsGrid');
+  if (!posts.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="es-icon">🪻</div>
+        <div class="es-text">这里还空着<br>写下你们的第一篇恋爱日记吧</div>
+      </div>`;
+    return;
+  }
+  grid.innerHTML = posts.map((p, i) => `
+    <div class="diary-card reveal">
+      <div class="d-date">${esc(p.date)}</div>
+      <div class="d-title">${esc(p.title)}</div>
+      ${p.image ? `<img class="d-img" src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : ''}
+      <div class="d-body">${esc(p.body)}</div>
+      ${p.mood ? `<span class="d-mood">${esc(p.mood)}</span>` : ''}
+      <div class="d-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editPost(${i})">编辑</button>
+        <button class="btn btn-danger btn-sm" onclick="deletePost(${i})">删除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function editPost(i)  { openModal(i); }
+function deletePost(i) { if (confirm('删除这篇日记？')) { posts.splice(i,1); savePosts(); renderPosts(); refreshReveal(); } }
+
+// ── Gallery ───────────────────────────────────
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  const valid = gallery.filter(g => g.url);
+  grid.innerHTML =
+    valid.map((g, i) => {
+      const realIdx = gallery.indexOf(g);
+      return `
+      <div class="gallery-item reveal" onclick="openLightbox('${esc(g.url)}')">
+        <img src="${esc(g.url)}" alt="${esc(g.caption || '')}" loading="lazy" onerror="this.parentElement.remove()">
+        <button class="gallery-del-btn" onclick="event.stopPropagation();deleteGalleryPhoto(${realIdx})" title="删除照片">✕</button>
+        <div class="g-overlay"><span>${esc(g.caption || '')}</span></div>
+      </div>
+    `}).join('') +
+    `<div class="gallery-placeholder reveal" onclick="document.getElementById('galleryFileInput').click()">
+      <span class="gp-icon">+</span>
+      <span>添加照片</span>
+    </div>`;
+}
+
+function deleteGalleryPhoto(i) {
+  if (!confirm('删除这张照片？')) return;
+  gallery.splice(i, 1);
+  saveGallery();
+  renderGallery(); refreshReveal();
+}
+
+function addPhoto() {
+  document.getElementById('galleryFileInput').click();
+}
+
+function handleGalleryFiles(files) {
+  if (!files.length) return;
+  const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+  let processed = 0;
+  imageFiles.forEach(file => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const maxW = 1200;
+      const scale = Math.min(1, maxW / img.naturalWidth);
+      const cw = Math.round(img.naturalWidth * scale), ch = Math.round(img.naturalHeight * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = cw; canvas.height = ch;
+      canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+      gallery.push({ url: canvas.toDataURL('image/jpeg', 0.85), caption: file.name.replace(/\.[^.]+$/, '') });
+      processed++;
+      if (processed === imageFiles.length) {
+        saveGallery();
+        renderGallery(); refreshReveal();
+      }
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); processed++; };
+    img.src = url;
+  });
+}
+
+function openLightbox(url) {
+  galleryPhotos = [];
+  document.getElementById('lightboxImg').src = url;
+  document.getElementById('lightboxCaption').textContent = '';
+  document.getElementById('lightboxIndex').textContent = '';
+  document.getElementById('lbPrev').classList.add('hidden');
+  document.getElementById('lbNext').classList.add('hidden');
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+// ── Modal ─────────────────────────────────────
+function setupModal() {
+  const overlay = document.getElementById('postModal');
+  document.getElementById('newPostBtn').addEventListener('click', () => openModal());
+  document.getElementById('cancelPost').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+  document.getElementById('postForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const now = new Date();
+    const ds  = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+    const post = {
+      title: document.getElementById('postTitle').value.trim(),
+      body:  document.getElementById('postBody').value.trim(),
+      image: document.getElementById('postImage').value.trim(),
+      mood:  document.getElementById('postMood').value,
+      date:  ds,
+    };
+    if (!post.title || !post.body) return;
+
+    if (editingIdx !== null) {
+      posts[editingIdx] = { ...posts[editingIdx], ...post };
+      editingIdx = null;
+    } else {
+      posts.unshift(post);
+    }
+    savePosts(); renderPosts(); refreshReveal();
+    closeModal();
+  });
+}
+
+function openModal(idx = null) {
+  const overlay = document.getElementById('postModal');
+  if (idx !== null) {
+    editingIdx = idx;
+    const p = posts[idx];
+    document.getElementById('modalTitle').textContent = '编辑日记';
+    document.getElementById('postTitle').value = p.title;
+    document.getElementById('postBody').value  = p.body;
+    document.getElementById('postImage').value = p.image || '';
+    document.getElementById('postMood').value  = p.mood || '幸福';
+  } else {
+    editingIdx = null;
+    document.getElementById('modalTitle').textContent = '写日记';
+    document.getElementById('postForm').reset();
+    document.getElementById('postMood').value = '幸福';
+  }
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('postModal').classList.remove('active');
+  document.body.style.overflow = '';
+  editingIdx = null;
+}
+
+// ── Gallery File Input ─────────────────────────
+function setupGalleryInput() {
+  document.getElementById('galleryFileInput').addEventListener('change', function() {
+    handleGalleryFiles(this.files);
+    this.value = '';
+  });
+}
+
+// ── Lightbox ──────────────────────────────────
+function closeLb() {
+  const lb = document.getElementById('lightbox');
+  lb.classList.remove('active'); document.body.style.overflow = '';
+  galleryPhotos = []; galleryIdx = 0;
+}
+
+function setupLightbox() {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightboxClose').addEventListener('click', closeLb);
+  lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+  // Prev/next gallery nav
+  document.getElementById('lbPrev').addEventListener('click', () => {
+    if (galleryPhotos.length) { galleryIdx = (galleryIdx - 1 + galleryPhotos.length) % galleryPhotos.length; showGalleryImage(); }
+  });
+  document.getElementById('lbNext').addEventListener('click', () => {
+    if (galleryPhotos.length) { galleryIdx = (galleryIdx + 1) % galleryPhotos.length; showGalleryImage(); }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLb(); return; }
+    if (!lb.classList.contains('active') || !galleryPhotos.length) return;
+    if (e.key === 'ArrowLeft')  { galleryIdx = (galleryIdx - 1 + galleryPhotos.length) % galleryPhotos.length; showGalleryImage(); }
+    if (e.key === 'ArrowRight') { galleryIdx = (galleryIdx + 1) % galleryPhotos.length; showGalleryImage(); }
+  });
+}
+
+// ── Nav ───────────────────────────────────────
+function setupNav() {
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+}
+
+// ── Reveal ────────────────────────────────────
+let revealObserver;
+function setupReveal() {
+  revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+function refreshReveal() {
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+}
+
+// ── Util ──────────────────────────────────────
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ── Romantic Particles ─────────────────────────
+(function initParticles() {
+  const container = document.getElementById('particles');
+  const icons = [
+    { e: '💕', s: 14 }, { e: '🌸', s: 13 }, { e: '✨', s: 10 },
+    { e: '🩷', s: 12 }, { e: '🫧', s: 8 },  { e: '🌷', s: 14 },
+    { e: '💫', s: 11 }, { e: '🦋', s: 16 }, { e: '💖', s: 13 },
+  ];
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle';
+    const icon = icons[i % icons.length];
+    p.textContent = icon.e;
+    const size = icon.s + Math.random() * 10;
+    p.style.cssText = `
+      font-size: ${size}px;
+      left: ${Math.random() * 94}%;
+      top: ${80 + Math.random() * 20}%;
+      --p-dur: ${10 + Math.random() * 14}s;
+      --p-delay: ${Math.random() * 12}s;
+      --p-y: ${-300 - Math.random() * 500}px;
+      --p-x: ${(Math.random() - 0.5) * 120}px;
+      --p-rot: ${(Math.random() - 0.5) * 80}deg;
+      --p-opacity: ${0.25 + Math.random() * 0.35};
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ── Cat Cursor ─────────────────────────────────
+(function() {
+  var cat = document.getElementById('catCursor');
+  var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  var cx = mx, cy = my;
+  var vx = 0, vy = 0; // velocity for chasing effect
+  var idleFrames = 0, isIdle = false;
+  var behaviorTimer = 0, nextBehavior = 400;
+
+  document.addEventListener('mousemove', function(e) {
+    var dx = e.clientX - mx, dy = e.clientY - my;
+    mx = e.clientX; my = e.clientY;
+    vx = dx; vy = dy;
+    idleFrames = 0;
+    if (isIdle) { isIdle = false; cat.classList.remove('sleepy'); }
+  });
+
+  // Random cat behaviors
+  var behaviors = [
+    { name: 'lookLeft',  fn: function() { cat.style.transform = 'translate(-14px,-8px) rotate(-15deg)'; setTimeout(function(){ cat.style.transform = 'translate(-14px,-8px)'; }, 200); } },
+    { name: 'lookRight', fn: function() { cat.style.transform = 'translate(-14px,-8px) rotate(15deg)'; setTimeout(function(){ cat.style.transform = 'translate(-14px,-8px)'; }, 200); } },
+    { name: 'stretch',   fn: function() { cat.style.transform = 'translate(-14px,-8px) scale(1.15)'; setTimeout(function(){ cat.style.transform = 'translate(-14px,-8px)'; }, 180); } },
+    { name: 'wiggle',    fn: function() { cat.style.filter = 'drop-shadow(0 1px 2px rgba(0,0,0,0.08)) hue-rotate(10deg)'; setTimeout(function(){ cat.style.filter = ''; }, 300); } },
+  ];
+
+  function doBehavior() {
+    var b = behaviors[Math.floor(Math.random() * behaviors.length)];
+    b.fn();
+  }
+
+  function animate() {
+    // Smooth follow with momentum
+    var speed = isIdle ? 0.04 : 0.14;
+    cx += (mx - cx) * speed + vx * 0.02;
+    cy += (my - cy) * speed + vy * 0.02;
+    vx *= 0.9; vy *= 0.9; // decay velocity
+
+    cat.style.left = cx + 'px';
+    cat.style.top  = cy + 'px';
+
+    // Idle detection
+    idleFrames++;
+    if (idleFrames > 180 && !isIdle) {
+      isIdle = true;
+      cat.classList.add('sleepy');
+    }
+
+    // Random behaviors (even when idle or active)
+    behaviorTimer++;
+    if (behaviorTimer > nextBehavior) {
+      behaviorTimer = 0;
+      nextBehavior = isIdle ? 150 + Math.random() * 200 : 250 + Math.random() * 400;
+      doBehavior();
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  // Pounce on click
+  document.addEventListener('mousedown', function() {
+    cat.classList.add('pouncing');
+    setTimeout(function() { cat.classList.remove('pouncing'); }, 200);
+  });
+
+  // Init
+  cat.style.left = mx + 'px';
+  cat.style.top  = my + 'px';
+  animate();
+})();
+
+</script>
+</body>
+</html>
